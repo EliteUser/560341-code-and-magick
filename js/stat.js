@@ -32,6 +32,36 @@ var renderCloud = function (ctx, x, y, color) {
   ctx.fill();
 };
 
+var getBarStyle = function (ctx, index, playerIndex) {
+  ctx.fillStyle = (index === playerIndex) ? PLAYER_BAR_COLOR : 'rgba(0, 0, 255,' + Math.random() + ')';
+};
+
+var renderUsersStatistics = function (ctx, names, times) {
+  var playersStats = names.map(function (name, index) {
+    return {name: name, time: times[index]};
+  });
+
+  playersStats = playersStats.sort(function (a, b) {
+    return a.time - b.time;
+  });
+
+  var maxTime = Math.max.apply(null, times);
+  var playerIndex = playersStats.map(function (elem) {
+    return elem.name;
+  }).indexOf(PLAYER_NAME);
+
+  for (var i = 0; i < playersStats.length; i++) {
+    var barHeight = (HIST_HEIGHT * playersStats[i].time) / maxTime;
+
+    ctx.fillStyle = FONT_COLOR;
+    ctx.fillText(playersStats[i].name, CLOUD_X + (2 * OFFSET) + i * (BAR_GAP + BAR_WIDTH), HIST_BASELINE);
+    ctx.fillText(parseInt(playersStats[i].time, 10), CLOUD_X + (2 * OFFSET) + i * (BAR_GAP + BAR_WIDTH), HIST_BASELINE - barHeight - 1.5 * FONT_GAP);
+
+    getBarStyle(ctx, i, playerIndex);
+    ctx.fillRect(CLOUD_X + (2 * OFFSET) + i * (BAR_GAP + BAR_WIDTH), HIST_BASELINE - FONT_GAP - barHeight, BAR_WIDTH, barHeight);
+  }
+};
+
 window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, CLOUD_X + SHADOW_GAP, CLOUD_Y + SHADOW_GAP, 'rgba(0, 0, 0, 0.7)');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#ffffff');
@@ -41,17 +71,5 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.fillText('Ура вы победили!', CLOUD_X + (2 * OFFSET), CLOUD_Y + (2 * OFFSET));
   ctx.fillText('Список результатов:', CLOUD_X + (2 * OFFSET), CLOUD_Y + (2 * OFFSET) + FONT_GAP);
 
-  var maxTime = Math.max.apply(null, times);
-  var playerIndex = names.indexOf(PLAYER_NAME);
-
-  for (var i = 0; i < names.length; i++) {
-    var barHeight = (HIST_HEIGHT * times[i]) / maxTime;
-
-    ctx.fillStyle = FONT_COLOR;
-    ctx.fillText(names[i], CLOUD_X + (2 * OFFSET) + i * (BAR_GAP + BAR_WIDTH), HIST_BASELINE);
-    ctx.fillText(parseInt(times[i], 10), CLOUD_X + (2 * OFFSET) + i * (BAR_GAP + BAR_WIDTH), HIST_BASELINE - barHeight - 1.5 * FONT_GAP);
-
-    ctx.fillStyle = (i === playerIndex) ? PLAYER_BAR_COLOR : 'rgba(0, 0, 255,' + Math.random() + ')';
-    ctx.fillRect(CLOUD_X + (2 * OFFSET) + i * (BAR_GAP + BAR_WIDTH), HIST_BASELINE - FONT_GAP - barHeight, BAR_WIDTH, barHeight);
-  }
+  renderUsersStatistics(ctx, names, times);
 };
