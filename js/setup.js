@@ -1,12 +1,14 @@
 'use strict';
 
-/* Генерация данных о похожих волшебниках */
+/* Данные */
 
 var WIZARDS_QUANTITY = 4;
 var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var WIZARS_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var WIZARD_COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var WIZARD_EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+
+/* Генерация данных о похожих волшебниках */
 
 var getRandomArrayElement = function (array) {
   return array[Math.floor(Math.random() * array.length)];
@@ -30,8 +32,6 @@ var generateWizardsData = function () {
   }
   return data;
 };
-
-var wizardsData = generateWizardsData();
 
 /* Отрисовка похожих волшебников */
 
@@ -64,4 +64,7 @@ var renderSimilarWizards = function (wizards) {
   wizardSetup.querySelector('.setup-similar').classList.remove('hidden');
 };
 
+/* Отрисовка сгенерированных данных */
+
+var wizardsData = generateWizardsData();
 renderSimilarWizards(wizardsData);
