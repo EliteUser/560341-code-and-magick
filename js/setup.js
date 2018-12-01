@@ -83,18 +83,14 @@ var openSetup = function () {
   wizardSetupClose.addEventListener('click', wizardSetupCloseClickHandler);
   wizardSetupClose.addEventListener('keydown', wizardSetupCloseEnterHandler);
   document.addEventListener('keydown', wizardSetupEscHandler);
-
-  wizardNameInput.addEventListener('focus', wizardNameInputFocusHandler);
 };
 
 var closeSetup = function () {
+  wizardSetup.style = '';
   wizardSetup.classList.add('hidden');
-
   wizardSetupClose.removeEventListener('click', wizardSetupCloseClickHandler);
   wizardSetupClose.removeEventListener('keydown', wizardSetupCloseEnterHandler);
   document.removeEventListener('keydown', wizardSetupEscHandler);
-
-  wizardNameInput.removeEventListener('focus', wizardNameInputFocusHandler);
 };
 
 var wizardSetupEscHandler = function (evt) {
@@ -130,15 +126,13 @@ wizardSetupOpen.addEventListener('keydown', wizardSetupOpenEnterHandler);
 
 var wizardNameInput = wizardSetup.querySelector('.setup-user-name');
 
-var wizardNameInputFocusHandler = function () {
-  document.removeEventListener('keydown', wizardSetupEscHandler);
-  wizardNameInput.addEventListener('blur', wizardNameInputBlurHandler);
+var cancelEscEvent = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    evt.stopPropagation();
+  }
 };
 
-var wizardNameInputBlurHandler = function () {
-  document.addEventListener('keydown', wizardSetupEscHandler);
-  wizardNameInput.removeEventListener('blur', wizardNameInputBlurHandler);
-};
+wizardNameInput.addEventListener('keydown', cancelEscEvent);
 
 /* Изменение цвета мантии */
 
@@ -179,4 +173,3 @@ var wizardFireballClickHandler = function () {
 wizardCoat.addEventListener('click', wizardCoatClickHandler);
 wizardEyes.addEventListener('click', wizardEyesClickHandler);
 wizardFireball.addEventListener('click', wizardFireballClickHandler);
-// может стоит эти обработчики перенести в тело openSetup() и затем удалять их в теле closeSetup()?
