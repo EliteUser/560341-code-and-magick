@@ -56,13 +56,28 @@
     if (evt.keyCode === window.util.ESC_KEYCODE) {
       evt.stopPropagation();
     }
-
-    /* window.util.isEscEvent(evt, evt.stopPropagation); - так не работает */
   };
 
   wizardNameInput.addEventListener('keydown', cancelEscEvent);
 
+  /* Отправка данных формы на сервер */
+
+  var form = wizardSetup.querySelector('.setup-wizard-form');
+
+  var formSubmitSuccessHandler = function () {
+    wizardSetup.classList.add('hidden');
+  };
+
+  var formSubmitErrorHandler = function (errorMessage) {
+    window.render.renderError(errorMessage);
+  };
+
+  var formSubmitHandler = function (evt) {
+    window.backend.save(new FormData(form), formSubmitSuccessHandler, formSubmitErrorHandler);
+    evt.preventDefault();
+  };
+
+  form.addEventListener('submit', formSubmitHandler);
+
 
 })();
-
-
