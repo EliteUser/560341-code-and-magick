@@ -31,6 +31,8 @@
       } else {
         elementInput.value = color;
         element.style.fill = color;
+
+        window.similar.updateWizards();
       }
     });
   };
