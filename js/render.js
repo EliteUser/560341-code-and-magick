@@ -23,8 +23,10 @@
   };
 
   var renderSimilarWizards = function (wizards) {
+    window.data.wizardsData = wizards;
     var fragment = document.createDocumentFragment();
     var similarListElement = wizardSetup.querySelector('.setup-similar-list');
+    similarListElement.innerHTML = '';
 
     for (var i = 0; i < WIZARDS_QUANTITY; i++) {
       fragment.appendChild(renderWizard(wizards[i]));
@@ -50,6 +52,7 @@
 
   window.render = {
     renderError: renderError,
+    renderSimilarWizards: renderSimilarWizards,
   };
 
 })();
