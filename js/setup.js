@@ -72,9 +72,29 @@
     window.render.renderError(errorMessage);
   };
 
+  var changeWizardAppearance = function () {
+    var wizardElement = document.querySelector('.setup-wizard');
+    var wizardCoatElement = wizardElement.querySelector('.wizard-coat');
+    var wizardEyesElement = wizardElement.querySelector('.wizard-eyes');
+    var wizardCopy = document.querySelector('svg').cloneNode(true);
+
+    wizardCopy.querySelector('#wizard-coat').style.fill = wizardCoatElement.style.fill;
+    wizardCopy.querySelector('#wizard-eyes').style.fill = wizardEyesElement.style.fill;
+
+    var wizardBase64Right = window.svg2base64(wizardCopy);
+    wizardCopy.querySelector('#wizard').setAttribute('transform', 'translate(62, 0) scale(-1, 1)');
+    var wizardBase64Left = window.svg2base64(wizardCopy);
+
+    window.restartGame(wizardBase64Right, wizardBase64Left);
+  };
+
   var formSubmitHandler = function (evt) {
-    window.backend.save(new FormData(form), formSubmitSuccessHandler, formSubmitErrorHandler);
     evt.preventDefault();
+
+    window.backend.save(new FormData(form))
+      .then(formSubmitSuccessHandler)
+      .then(changeWizardAppearance)
+      .catch(formSubmitErrorHandler);
   };
 
   form.addEventListener('submit', formSubmitHandler);

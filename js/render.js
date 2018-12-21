@@ -48,7 +48,9 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.backend.load(renderSimilarWizards, renderError);
+  window.backend.load()
+    .then(renderSimilarWizards)
+    .catch(renderError);
 
   window.render = {
     renderError: renderError,
